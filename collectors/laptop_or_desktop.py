@@ -40,6 +40,7 @@ class LaptopOrDesktop(Collector, ABC):
         Collector which collects Laptop / Desktop
         :return: 'Laptop / Desktop / Unknown'
         """
+        # TODO - Move WMI Querier to base class
         c = wmi.WMI()
         wql = "SELECT ChassisTypes FROM Win32_SystemEnclosure"
         for system_enclosure in c.query(wql):

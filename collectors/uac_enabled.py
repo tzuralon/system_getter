@@ -6,6 +6,7 @@ from collectors.base import Collector
 
 
 class UacEnabled(Collector, ABC):
+    #TODO - Move to base class
     def get_registry_value(self, header_key: winreg.HKEYType, registry_path: str, name: str) -> str:
         """
 
