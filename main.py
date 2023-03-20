@@ -1,9 +1,11 @@
 from collectors.laptop_or_desktop import LaptopOrDesktop
+from collectors.timezone import Timezone
 
 
 class Main:
     def __init__(self):
-        self.collectors = list([LaptopOrDesktop()])
+        self.collectors = list([LaptopOrDesktop(),
+                                Timezone()])
         self.collectables = dict()
 
     def collect_all_collectables(self):
