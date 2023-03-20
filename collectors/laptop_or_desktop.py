@@ -3,7 +3,7 @@ from abc import ABC
 import wmi
 import re
 
-from collectors.base import Collector
+from collectors.base import Collector, get_wmi_value
 
 chassis_types_dict = dict({1: 'Other',
                            2: 'Unknown',
@@ -40,19 +40,17 @@ class LaptopOrDesktop(Collector, ABC):
         Collector which collects Laptop / Desktop
         :return: 'Laptop / Desktop / Unknown'
         """
-        # TODO - Move WMI Querier to base class
-        c = wmi.WMI()
-        wql = "SELECT ChassisTypes FROM Win32_SystemEnclosure"
-        for system_enclosure in c.query(wql):
-            """
-            Return is in format:
-            instance of Win32_SystemEnclosure
-            {
-                ChassisTypes = {10};
-                Tag = "System Enclosure 0";
-            };
-            """
-            chassis_type = re.findall(r"ChassisTypes = {(\d+)}", str(system_enclosure))
+
+        """
+        Return is in format:
+        instance of Win32_SystemEnclosure
+        {
+            ChassisTypes = {10};
+            Tag = "System Enclosure 0";
+        };
+        """
+        chassis_types = get_wmi_value("SELECT ChassisTypes FROM Win32_SystemEnclosure", r"ChassisTypes = {(\d+)}")
+        for chassis_type in chassis_types:
             if 0 == len(chassis_type):  # If none returned - return Unknown type
                 return 'Unknown'
             chassis_type_int = int(chassis_type[0])  # Assume we have a single instance
