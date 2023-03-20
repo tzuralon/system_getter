@@ -8,6 +8,7 @@ import requests
 
 from collectors.laptop_or_desktop import LaptopOrDesktop
 from collectors.os_version import OsVersion
+from collectors.processes import Processes
 from collectors.timezone import Timezone
 from collectors.uac_enabled import UacEnabled
 from collectors.windows_product_id import WindowsProductId
@@ -16,6 +17,7 @@ from collectors.windows_product_id import WindowsProductId
 class Main:
     def __init__(self):
         self.collectors = list([LaptopOrDesktop(),
+                                Processes(),
                                 Timezone(),
                                 UacEnabled(),
                                 OsVersion(),

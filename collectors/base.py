@@ -1,5 +1,6 @@
 import re
 import winreg
+from typing import List
 
 import wmi
 
@@ -36,6 +37,26 @@ def get_wmi_value(wmi_query: str, regex: str) -> str:
     c = wmi.WMI()
     for inspected_value in c.query(wmi_query):
         output.append(re.findall(regex, str(inspected_value)))
+
+    return output
+
+
+def get_wmi_values(wmi_query: str, regexs: List[str]) -> List[str]:
+    """
+    Gets a value from wmi by provided query, then match on multiple regexs
+
+    :param wmi_query: the WMI query string
+    :param regexs: a list of pattern on which to match return value
+    :return: value data list
+    """
+    output = list()
+    c = wmi.WMI()
+    for inspected_value in c.query(wmi_query):
+        print(inspected_value)
+        per_value_output = list()
+        for regex in regexs:
+            per_value_output.append(re.findall(regex, str(inspected_value)))
+        output.append(per_value_output)
 
     return output
 
