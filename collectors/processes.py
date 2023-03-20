@@ -14,12 +14,12 @@ class Processes(Collector, ABC):
                                                                                                 r"Caption = \"(.+)\"",
                                                                                                 r"ThreadCount = (\d+)"])
 
-        #Compile the list of lists into readable json
+        # Compile the list of lists into a readable json
         output = list()
         for wmi_process in wmi_processes:
-            process = dict({'Handle': wmi_process[0],
-                            'Caption': wmi_process[1],
-                            'ThreadCount': wmi_process[2]})
+            process = dict({'Handle': wmi_process[0][0],
+                            'Caption': wmi_process[1][0],
+                            'ThreadCount': wmi_process[2][0]})
             output.append(process)
 
         return json.dumps(output)

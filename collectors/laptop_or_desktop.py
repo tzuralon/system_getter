@@ -1,10 +1,8 @@
 from abc import ABC
 
-import wmi
-import re
-
 from collectors.base import Collector, get_wmi_value
 
+#Retrieved from https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-systemenclosure
 chassis_types_dict = dict({1: 'Other',
                            2: 'Unknown',
                            3: 'Desktop',
@@ -60,7 +58,7 @@ class LaptopOrDesktop(Collector, ABC):
                 return 'Desktop'
             elif 8 <= chassis_type_int:
                 return 'Laptop'
-            return 'Unknown'
+            return 'Unknown'  # Other chassis_type_int (<1)
 
     def header(self) -> str:
         return 'Laptop or Desktop'

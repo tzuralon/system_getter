@@ -10,7 +10,7 @@ class Timezone(Collector, ABC):
         """
         Collector which collects Timezone
         If there are 2 timezones (one for DST and for non-DST, it will take the relevant one according to daylight conf
-        :return: Timezone string ('IST', 'IDT')
+        :return: Timezone string
         """
         return time.tzname[time.daylight]
 

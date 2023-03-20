@@ -7,7 +7,7 @@ import wmi
 
 def get_registry_value(header_key: winreg.HKEYType, registry_path: str, name: str) -> str:
     """
-    Gets a value from registry by provided parameters
+    Gets a value from registry by provided parameters, if failed, return None
 
     :param header_key: HKEY enum
     :param registry_path: Registry path, such as Control Panel\Mouse
@@ -62,6 +62,9 @@ def get_wmi_values(wmi_query: str, regexs: List[str]) -> List[str]:
 
 
 class Collector:
+    """
+    Base class for Collector
+    """
     def collect(self):
         raise NotImplementedError("Virtual method, please use an inheriting method")
 

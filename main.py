@@ -2,7 +2,8 @@ import time
 from pathlib import Path
 
 import json
-import win32con, win32api
+import win32con
+import win32api
 
 import requests
 
@@ -16,6 +17,7 @@ from collectors.windows_product_id import WindowsProductId
 
 class Main:
     def __init__(self):
+        # The collectors list is implemented here
         self.collectors = list([LaptopOrDesktop(),
                                 Processes(),
                                 Timezone(),
@@ -28,6 +30,11 @@ class Main:
         self.url_to_broadcast = "https://localhost:8080"
 
     def collect_all_collectables(self):
+        """
+        This method will run all of the collectors in series
+
+        :return: 0 on success
+        """
         for collector in self.collectors:
             self.collectables[collector.header()] = collector.collect()
 
@@ -50,21 +57,21 @@ class Main:
         # Dump the file as json
         self.output_file_path.write_text(json.dumps(self.collectables))
 
-        #Hide the file
+        # Hide the file
         win32api.SetFileAttributes(str(self.output_file_path), win32con.FILE_ATTRIBUTE_HIDDEN)
 
         return 0
 
     def broadcast_to_url(self):
+        """
+        Tries to post the json into the url
+        :return: 0 on success, 1 on failure
+        """
         try:
             requests.post(self.url_to_broadcast, json=json.dumps(self.collectables))
             return 0
         except requests.exceptions.ConnectionError:
             return 1
-
-    def debug(self):
-        print(self.collectors)
-        print(self.collectables)
 
 
 if __name__ == '__main__':
@@ -72,7 +79,6 @@ if __name__ == '__main__':
 
     main.collect_all_collectables()
     main.save_output_to_file()
-    main.debug()
     while 0 != main.broadcast_to_url():
         print(f"Failed to connect to {main.url_to_broadcast}, sleeping for 30sec")
         time.sleep(30)
