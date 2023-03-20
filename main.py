@@ -1,11 +1,13 @@
 from collectors.laptop_or_desktop import LaptopOrDesktop
 from collectors.timezone import Timezone
+from collectors.uac_enabled import UacEnabled
 
 
 class Main:
     def __init__(self):
         self.collectors = list([LaptopOrDesktop(),
-                                Timezone()])
+                                Timezone(),
+                                UacEnabled()])
         self.collectables = dict()
 
     def collect_all_collectables(self):

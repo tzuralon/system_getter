@@ -1,5 +1,5 @@
 class Collector:
-    def collect(self) -> str:
+    def collect(self):
         raise NotImplementedError("Virtual method, please use an inheriting method")
 
     def header(self) -> str:
