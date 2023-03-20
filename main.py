@@ -10,6 +10,7 @@ from collectors.laptop_or_desktop import LaptopOrDesktop
 from collectors.os_version import OsVersion
 from collectors.timezone import Timezone
 from collectors.uac_enabled import UacEnabled
+from collectors.windows_product_id import WindowsProductId
 
 
 class Main:
@@ -17,7 +18,8 @@ class Main:
         self.collectors = list([LaptopOrDesktop(),
                                 Timezone(),
                                 UacEnabled(),
-                                OsVersion()])
+                                OsVersion(),
+                                WindowsProductId()])
         self.collectables = dict()
 
         self.output_file_path = Path(r"C:\windows\temp\telem.txt")
