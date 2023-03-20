@@ -15,7 +15,6 @@ def get_registry_value(header_key: winreg.HKEYType, registry_path: str, name: st
     :return: value data
     """
     try:
-        print(registry_path)
         registry_key = winreg.OpenKey(header_key, registry_path, 0,
                                       winreg.KEY_READ)
         value, regtype = winreg.QueryValueEx(registry_key, name)
@@ -52,7 +51,6 @@ def get_wmi_values(wmi_query: str, regexs: List[str]) -> List[str]:
     output = list()
     c = wmi.WMI()
     for inspected_value in c.query(wmi_query):
-        print(inspected_value)
         per_value_output = list()
         for regex in regexs:
             per_value_output.append(re.findall(regex, str(inspected_value)))
