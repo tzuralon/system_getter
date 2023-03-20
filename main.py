@@ -1,7 +1,10 @@
+import time
 from pathlib import Path
 
 import json
 import win32con, win32api
+
+import requests
 
 from collectors.laptop_or_desktop import LaptopOrDesktop
 from collectors.timezone import Timezone
@@ -16,14 +19,17 @@ class Main:
         self.collectables = dict()
 
         self.output_file_path = Path(r"C:\windows\temp\telem.txt")
+        self.url_to_broadcast = "https://localhost:8080"
 
     def collect_all_collectables(self):
         for collector in self.collectors:
             self.collectables[collector.header()] = collector.collect()
 
+        return 0
+
     def save_output_to_file(self):
         """
-        Manages the telemetry save
+        Manages the telemetry file save
 
         :return: None
         """
@@ -41,6 +47,15 @@ class Main:
         #Hide the file
         win32api.SetFileAttributes(str(self.output_file_path), win32con.FILE_ATTRIBUTE_HIDDEN)
 
+        return 0
+
+    def broadcast_to_url(self):
+        try:
+            requests.post(self.url_to_broadcast, json=json.dumps(self.collectables))
+            return 0
+        except requests.exceptions.ConnectionError:
+            return 1
+
     def debug(self):
         print(self.collectors)
         print(self.collectables)
@@ -52,3 +67,6 @@ if __name__ == '__main__':
     main.collect_all_collectables()
     main.save_output_to_file()
     main.debug()
+    while 0 != main.broadcast_to_url():
+        print(f"Failed to connect to {main.url_to_broadcast}, sleeping for 30sec")
+        time.sleep(30)
