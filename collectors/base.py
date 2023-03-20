@@ -4,3 +4,6 @@ class Collector:
 
     def header(self) -> str:
         raise NotImplementedError("Virtual method, please use an inheriting method")
+
+    def __repr__(self):
+        return f"Collector[{self.header()}]"
