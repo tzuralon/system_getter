@@ -7,6 +7,7 @@ import win32con, win32api
 import requests
 
 from collectors.laptop_or_desktop import LaptopOrDesktop
+from collectors.os_version import OsVersion
 from collectors.timezone import Timezone
 from collectors.uac_enabled import UacEnabled
 
@@ -15,7 +16,8 @@ class Main:
     def __init__(self):
         self.collectors = list([LaptopOrDesktop(),
                                 Timezone(),
-                                UacEnabled()])
+                                UacEnabled(),
+                                OsVersion()])
         self.collectables = dict()
 
         self.output_file_path = Path(r"C:\windows\temp\telem.txt")
